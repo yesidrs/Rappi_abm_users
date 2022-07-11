@@ -1,0 +1,29 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    user: root
+    group: docker
+    traefik_config: /opt/traefik
+  tasks:
+    - name: config directory
+      file:
+        path: "{{ traefik_config }}"
+        state: directory
+        owner: "{{ user }}"
+        group: "{{ group }}"
+
+    - name: copy config.yml file
+      template:
+        src: config.yml.j2
+        dest: "{{ traefik_config }}/config.yml"
+        mode: 0600
+
+    - name: Run docker-compose.yml with scaling example
+      docker_compose:
+        project_src: ../
+        files:
+          - docker-compose.yml
+        build: yes
+        scale:
+          app: 3
