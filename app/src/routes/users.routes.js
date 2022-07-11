@@ -1,4 +1,4 @@
-module.exports = app => {
+module.exports = (app) => {
   const users = require("../controllers/users.controller.js");
 
   let router = require("express").Router();
@@ -15,5 +15,5 @@ module.exports = app => {
 
   router.delete("/", users.deleteAll);
 
-  app.use('/api/users', router);
+  app.use("/api/users", router);
 };

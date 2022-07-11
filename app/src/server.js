@@ -1,20 +1,20 @@
-'use strict';
+"use strict";
 
-require('dotenv').config();
+require("dotenv").config();
 
-const express = require('express');
-const cors = require('cors')
-const morgan = require('morgan');
+const express = require("express");
+const cors = require("cors");
+const morgan = require("morgan");
 
 const app = express();
 
 let corsOptions = {
-  origin: "http://localhost:8081"
+  origin: "http://localhost:8081",
 };
 
 app.use(cors(corsOptions));
 
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -28,5 +28,10 @@ app.get("/", (req, res) => {
 
 require("./routes/users.routes.js")(app);
 
-const PORT = process.env.NODE_DOCKER_PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const DOCKER_PORT = process.env.NODE_DOCKER_PORT || 3000;
+const LOCAL_PORT = process.env.NODE_LOCAL_PORT || 3050;
+app.listen(DOCKER_PORT, () =>
+  console.log(
+    `Server running on port ${DOCKER_PORT} in Docker, the local port to use endpoits is ${LOCAL_PORT}`
+  )
+);
