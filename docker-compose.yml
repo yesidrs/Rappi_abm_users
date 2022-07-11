@@ -7,18 +7,19 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
       - MYSQL_DATABASE=$MYSQLDB_DATABASE
-    ports:
-      - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
     volumes:
       - db:/var/lib/mysql
   app:
     depends_on:
       - mysqldb
-    build: ./app
+    labels:
+      - "traefik.http.routers.abm-users.rule=Host(`abm-users.com`)"
+    build: 
+      context: ./app
+      args: 
+        APP_PORT: $NODE_DOCKER_PORT
     restart: unless-stopped
     env_file: ./.env
-    ports:
-      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
     environment:
       - DB_HOST=mysqldb
       - DB_USER=$MYSQLDB_USER
@@ -27,5 +28,15 @@ services:
       - DB_PORT=$MYSQLDB_DOCKER_PORT
     stdin_open: true
     tty: true
-volumes: 
+  reverse-proxy:
+    depends_on:
+      - app
+    image: traefik:v2.8
+    command: --api.insecure=true --providers.docker
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+volumes:
   db:

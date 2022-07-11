@@ -29,9 +29,8 @@ app.get("/", (req, res) => {
 require("./routes/users.routes.js")(app);
 
 const DOCKER_PORT = process.env.NODE_DOCKER_PORT || 3000;
-const LOCAL_PORT = process.env.NODE_LOCAL_PORT || 3050;
 app.listen(DOCKER_PORT, () =>
   console.log(
-    `Server running on port ${DOCKER_PORT} in Docker, the local port to use endpoits is ${LOCAL_PORT}`
+    `Server running on port ${DOCKER_PORT}`
   )
 );
