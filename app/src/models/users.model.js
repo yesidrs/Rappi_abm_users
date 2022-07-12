@@ -16,10 +16,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     hiring_date: {
-      type: Sequelize.DATE,
+      type: Sequelize.DATEONLY,
     },
     departure_date: {
-      type: Sequelize.DATE,
+      type: Sequelize.DATEONLY,
     },
   });
 
