@@ -12,7 +12,7 @@ exports.create = (req, res) => {
   // Save User in the database
   User.create(user)
     .then((data) => {
-      res.send(data);
+      res.redirect("/");
     })
     .catch((err) => {
       res.status(500).send({
@@ -28,7 +28,8 @@ exports.findAll = (req, res) => {
 
   User.findAll({ where: condition })
     .then((data) => {
-      res.send(data);
+      const users = data;
+      res.render("index", { users: users });
     })
     .catch((err) => {
       res.status(500).send({
@@ -43,7 +44,8 @@ exports.findOne = (req, res) => {
 
   User.findByPk(id)
     .then((data) => {
-      res.send(data);
+      const user = data;
+      res.render("edit", { user: user });
     })
     .catch((err) => {
       res.status(500).send({
@@ -61,9 +63,7 @@ exports.update = (req, res) => {
   })
     .then((num) => {
       if (num == 1) {
-        res.send({
-          message: "user was updated successfully.",
-        });
+        res.redirect("/");
       } else {
         res.send({
           message: `Cannot update user with id=${id}. Maybe user was not found or req.body is empty!`,
@@ -86,9 +86,7 @@ exports.delete = (req, res) => {
   })
     .then((num) => {
       if (num == 1) {
-        res.send({
-          message: "User was deleted successfully!",
-        });
+        res.redirect("/");
       } else {
         res.send({
           message: `Cannot delete User with id=${id}. Maybe User was not found!`,
@@ -98,22 +96,6 @@ exports.delete = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message: "Could not delete User with id=" + id,
-      });
-    });
-};
-
-// Delete all Users from the database.
-exports.deleteAll = (req, res) => {
-  User.destroy({
-    where: {},
-    truncate: false,
-  })
-    .then((nums) => {
-      res.send({ message: `${nums} Users were deleted successfully!` });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while removing all users.",
       });
     });
 };
