@@ -5,6 +5,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
+const { engine } = require("express-handlebars");
 
 const app = express();
 
@@ -18,13 +19,15 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.engine('hbs', engine({
+  extname: 'hbs'
+}))
+app.set('view engine', 'hbs');
+app.set("views", __dirname + '/views');
+
+
 const db = require("./models");
-
 db.sequelize.sync();
-
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to Rappi ABM." });
-});
 
 require("./routes/users.routes.js")(app);
 
