@@ -13,7 +13,7 @@ services:
     depends_on:
       - mysqldb
     labels:
-      - "traefik.http.routers.abm-users.rule=Host(`abm-users.com`)"
+      - "traefik.http.routers.abm-users.rule=Host(`abmrappi.localhost`)"
     build: 
       context: ./app
       args: 

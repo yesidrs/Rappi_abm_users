@@ -24,22 +24,19 @@ para ver las respuestas a las peticiones http.
 - docker-compose
 
 # Ejecutar el programa localmente
-- Para traefik es necesario especificarle el host por el que seran redirigidos las peticiones de la app. para ello es debemos agregar el siguiente dominio: **abm-users.com** en el archivo host del respectivo sistema operativo:
+Cabe aclarar que el programa correrá localmente en el siguiente dominio: ***abmrappi.localhost***
 
-    **127.0.0.1 abm-users.com**
-
-    *Ejemplo: [Como editar el archivo host en windows](https://www.solvetic.com/tutoriales/article/10544-como-abrir-y-editar-archivo-hosts-windows-11/)*
-
-
-- Despues de haber realizado esto ya unicamente tenemos que ejecutar el siguiente comando de ansible:
+- Unicamente tenemos que ejecutar el siguiente comando de ansible:
 
     ``` ansible-playbook ansible/playbook.yml -i ansible/hosts -K ``` 
     
     *Nota: la primera vez te pedira la clave del usuario root, despues de eso cada vez que ejecutes el comando podrás obviar escribir la contraseña y presionar enter cuando aparezca **BECOME password**:*
 
+
     el cual se encargará de levantar el docker-compose, el cual levanta 3 contenderes: base de datos(mysql), la aplicación y traefik, ademas de que tambien ansible se encarga de pasarle las configuraciones a traefik.
 
-- para finalizar en el navegador ya solo agregamos el dominio anteriormente mencionado y nos aparecera una pagina con dos vistas, la principal que lista los usuarios que estén en la base de datos y la segunda que es un formuliario para agregarlos, cuando el usuario ya ha sido agregado podremos tanto eliminarlos como editarlos.
+
+- para finalizar en el navegador ya solo agregamos el dominio anteriormente mencionado (**abmrappi.localhost**) y nos aparecera una pagina con dos vistas, la principal que lista los usuarios que estén en la base de datos y la segunda que es un formuliario para agregarlos, cuando el usuario ya ha sido agregado podremos tanto eliminarlos como editarlos.
 
 ### Detener el proyecto
  ``` docker-compose down ```
