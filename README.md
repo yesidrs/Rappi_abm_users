@@ -44,3 +44,24 @@ Cabe aclarar que el programa correrá localmente en el siguiente dominio: ***abm
 
 ### Ver Logs
  ``` docker-compose logs -f ```
+
+
+# Despliegue
+<img src="abmrappi.drawio.png" alt="Despliegue"/>
+
+
+La infra de la aplicación seria escrita en un **cloudformation**, ya que las ventajas que ofrece usar infraetructura como codigo es el versionamiento de esta, ademas que se deja definido por escrito todos los servicios necesarios y los recursos destinados a cada uno, esto ayuda a al mantenimiento y escalabilidad de la infraetructura.
+
+Los servicios propuestos para está solución serian:
+
+- **API Gateway**: se encargará de servir como enrutador entre las peticiones del cliente y nuestro servidor web.
+
+- **VPC**: Nos brindara una red virtual privada en la cual lanzaremos los servicios que hospedaran la aplicación y la base de datos, ademas aprovecharemos uno de sus modulos que es el **Internet Gateway**, el cual servirá como proxy hacia peticiones del internet, integraciones con apis externas, etc.
+
+- **EC2**: Usaremos una Instancia de esta maquina virtual hospedada en la nube, en la cual tendremos las instalaciones necesarios para que la aplicación pueda ser levantada (Docker y ansible).
+
+- **RDS**: En este servicio subiremos la base de datos relacional mysql. este puede ser opcional ya que tambien la base de datos se puede trabajar como contenedor en la maquina EC2, pero la ventaja que proporciona es que facilita la manipulación y configuracion de la base de datos, ya que por EC2 todo se realizario por medio de consola.
+
+- **Secret Manager**: Este servicio almacenará los secretos para la base de datos y los puertos que usará la aplicación.
+
+- **CloudWatch**: Este servicio nos permitirá ver los logs, servirá como monitor tanto para nuestra maquina EC2, la base de datos RDS y las peticiones del API Gateway.
